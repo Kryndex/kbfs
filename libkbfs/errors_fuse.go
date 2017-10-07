@@ -10,6 +10,7 @@ import (
 	"syscall"
 
 	"bazil.org/fuse"
+	"github.com/keybase/kbfs/kbfsmd"
 )
 
 var _ fuse.ErrorNumber = NoSuchUserError{""}
@@ -50,6 +51,12 @@ var _ fuse.ErrorNumber = WriteAccessError{}
 // WriteAccessError.
 func (e WriteAccessError) Errno() fuse.Errno {
 	return fuse.Errno(syscall.EACCES)
+}
+
+// MetadataIsFinalError is a wrapper for kbfsmd.MetadataIsFinalError
+// that implements fuse.ErrorNumber.
+type MetadataIsFinalError struct {
+	kbfsmd.MetadataIsFinalError
 }
 
 var _ fuse.ErrorNumber = MetadataIsFinalError{}
